@@ -10,8 +10,21 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+# BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  #fixed for Python 2.7.6?
 
+#templace
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+#static
+#STATIC_PATH = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'  
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  #no good reason not to follow same format as TEMPLACE_DIRS?
+#STATICFILES_DIRS = [STATIC_PATH]
+
+#media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -25,7 +38,6 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -57,10 +69,16 @@ WSGI_APPLICATION = 'tango_with_django_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+DATABASE_PATH = os.path.join(BASE_DIR, 'rango/models')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'USER': 'xan',
+        'PASSWORD': 'saCu1528',
+        'HOST': '127.0.0.1',
+        'PORT': '8000',
     }
 }
 
