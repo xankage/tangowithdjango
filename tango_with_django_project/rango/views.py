@@ -1,7 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from rango.models import Category
-from rango.models import Page
+from rango.models import Category, Page
+from rango.forms import CategoryForm
+
+#def add_category(request):
+#  if request.method = 'POST':
+#    form = CategoryForm(request.POST)  
+    
+#    if form.is_valid():
+#      form.save(commit=True)
+#      return index(request) 
+#    else:
+#      print form.errors
+
+#  else:
+#    form = CategoryForm()
+
+#  return render(request, 'rango/add_category.html', {'form': form})
 
 def index(request):
   #return HttpResponse("Rango says hello world! <br/> <a href='/rango/about'>About</a>")
@@ -12,7 +27,7 @@ def index(request):
   return render(request, 'rango/index.html', context_dict)
 
 def about(request):
-  context_dict = {'author': "Alexander Nedergaard, 2018207."}
+  context_dict = {'author': "Alexander Nedergaard, 2018207"}
   return render(request, 'rango/about.html', context_dict)
   #return HttpResponse("Rango says here is the about page. <br/> <i>This tutorial has been put together by Alexander Nedergaard, 2018207.</i> <br/> <a href='/rango'>Index</a>")
 
