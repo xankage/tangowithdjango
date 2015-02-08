@@ -9,65 +9,65 @@ from datetime import datetime
 @login_required
 def restricted(request):
   return HttpResponse('Since you can see this, you are logged in! <br/><a hreF="/rango/">Home</a>')
-
-def user_login(request):
-  if request.method == 'POST':
-    username = request.POST['username']
-    password = request.POST['password'] 
-
-    user = authenticate(username=username, password=password)
-
-    if (user):
-      if (user.is_active):
-        login(request, user)
-        return HttpResponseRedirect('/rango/')
-
-      else:
-       return HttpResponse('Your rango account has been disabled. <br/><a href='/rango/login/'>Return</a>')
-    else:
-      print "Invalid login details: {0}, {1}".format(username, password)
-      return HttpResponse("Invalid login details. <br/><a href='/rango/login/'>Return</a>") #replace with more informative statement? i.e. username does not exist/wrong password - poor idea security-wise
-  else:
-    return render(request, 'rango/login.html', {})
+#
+#def user_login(request):
+#  if request.method == 'POST':
+#    username = request.POST['username']
+#    password = request.POST['password'] 
+#
+#    user = authenticate(username=username, password=password)
+#
+#    if (user):
+#      if (user.is_active):
+#        login(request, user)
+#        return HttpResponseRedirect('/rango/')
+#
+#      else:
+#       return HttpResponse('Your rango account has been disabled. <br/><a href='/rango/login/'>Return</a>')
+#    else:
+#      print "Invalid login details: {0}, {1}".format(username, password)
+#      return HttpResponse("Invalid login details. <br/><a href='/rango/login/'>Return</a>") #replace with more informative statement? i.e. username does not exist/wrong password - poor idea security-wise
+#  else:
+#    return render(request, 'rango/login.html', {})
    
-@login_required
-def user_logout(request):
-  logout(request)
-  
-  return HttpResponseRedirect('/rango/')
-
-def register(request):
-  if request.session.test_cookie_worked():
-    print "test cookie worked"
-    request.session.delete_test_cookie()
-  registered = False
-
-  if request.method == 'POST':
-    user_form = UserForm(data=request.POST)
-    profile_form = UserProfileForm(data=request.POST)
-    
-    if user_form.is_valid() and profile_form.is_valid(): 
-      user = user_form.save()
-      
-      user.set_password(user.password)
-      user.save()
-
-      profile = profile_form.save(commit = False)
-      profile.user = user
-      
-      if 'picture' in request.FILES:
-        profile.picture = request.FILES['picture']  
-      
-      profile.save()
-
-      registered = True
-    else:
-      print user_form.errors, profile_form.errors
-  else:
-    user_form = UserForm()
-    profile_form = UserProfileForm()
-
-  return render(request, 'rango/register.html', {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
+#@login_required
+#def user_logout(request):
+#  logout(request)
+#  
+#  return HttpResponseRedirect('/rango/')
+#
+#def register(request):
+#  if request.session.test_cookie_worked():
+#    print "test cookie worked"
+#    request.session.delete_test_cookie()
+#  registered = False
+#
+#  if request.method == 'POST':
+#    user_form = UserForm(data=request.POST)
+#    profile_form = UserProfileForm(data=request.POST)
+#    
+#    if user_form.is_valid() and profile_form.is_valid(): 
+#      user = user_form.save()
+#      
+#      user.set_password(user.password)
+#      user.save()
+#
+#      profile = profile_form.save(commit = False)
+#      profile.user = user
+#      
+#      if 'picture' in request.FILES:
+#        profile.picture = request.FILES['picture']  
+#      
+#      profile.save()
+#
+#      registered = True
+#    else:
+#      print user_form.errors, profile_form.errors
+#  else:
+#    user_form = UserForm()
+#    profile_form = UserProfileForm()
+#
+#  return render(request, 'rango/register.html', {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 @login_required
 def add_category(request):
