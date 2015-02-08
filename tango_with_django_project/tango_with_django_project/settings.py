@@ -26,6 +26,16 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  #no good reason not to fo
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+#cookies
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+#django-registration-redux
+REGISTRATION_OPEN = True
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = "/rango/"
+LOGIN_URL = "/accounts/login/"
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -49,6 +59,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rango',
+    'registration', #django-registration-redux
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,6 +76,11 @@ ROOT_URLCONF = 'tango_with_django_project.urls'
 
 WSGI_APPLICATION = 'tango_with_django_project.wsgi.application'
 
+# User
+PASSWORD_HASHERS = (
+'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases

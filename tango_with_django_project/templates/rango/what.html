@@ -1,16 +1,11 @@
-<!DOCTYPE HTML>
+{% extend 'base.html' %}
 
 {% load staticfiles %}
 
-<html>
+{% block title %}what{% endblock %}
 
-  <head>
-    <title>WHAT</title> 
-  </head>
+{% block body %}
+  <img src="{% static "images/what.jpg" %}" alt="what" />
+{% endblock %}
 
-  <body>
-    <a href='/rango/about'>lost</a> <br/>
-    <img src="{% static "images/what.jpg" %}" alt="what" />
-  </body>
 
-</html>
