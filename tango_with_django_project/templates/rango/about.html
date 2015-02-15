@@ -5,9 +5,13 @@
 {% block title %}About{% endblock %}
 
 {% block body %}
-  <p> Visits: {{ visits }} </p>
-  <i>This tutorial was put together by {{ author }}</i> <br />
-  <img src="{% static "images/xan.jpg" %}" alt="xan" />  
+  <div class='page-header'>
+    <p> Visits: {{ visits }} </p>
+    <i>This tutorial was put together by {{ author }}</i> <br />
+  </div>
+  <div>
+    <img src="{% static "images/xan.jpg" %}" alt="xan" />  
+  </div>
 {% endblock %}
 
 

@@ -3,8 +3,8 @@
 {% block title %}Add page{% endblock %}
 
 {% block body %}
- <h1>Add a page</h1>
-  <form id="page_form" method="post" action="/rango/category/{{cat.slug}}/add_page/">
+  <form role='form' id="page_form" method="post" action="/rango/category/{{cat.slug}}/add_page/">
+  <h2 class='form-signing-heading'>Add a page to <a href='/rango/category/{{cat.slug}}'>{{cat.name}}</a></h2>
   {% csrf_token %}
   {% for hidden in form.hidden_fields %}
     {{hidden}}
@@ -17,6 +17,6 @@
     <br/>
   {% endfor %}
   <br/>
-  <input type="submit" name="submit" value="Create page" />
+  <button class='btn btn-primary' type="submit" name="submit">Add page</button>
   </form> 
 {% endblock %}
