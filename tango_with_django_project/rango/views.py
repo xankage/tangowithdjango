@@ -7,6 +7,16 @@ from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from datetime import datetime
 from rango.bing_search import run_query
 
+def track_url(request):
+  if request.method == 'GET':
+    if 'page_id' in request.GET:
+      title = request.GET['page_id']
+      page = Page.objects.get(title = title)
+      page.views = page.views + 1
+      page.save()
+      return HttpResponseRedirect(page.url)
+  return HttpResponse('Page not found <br/><a href="/rango/">Home</a>')
+
 @login_required
 def restricted(request):
   return HttpResponse('Since you can see this, you are logged in! <br/><a hreF="/rango/">Home</a>')
@@ -23,66 +33,6 @@ def search(request):
             result_list = run_query(query)
 
     return render(request, 'rango/search.html', {'result_list': result_list})
-
-#
-#def user_login(request):
-#  if request.method == 'POST':
-#    username = request.POST['username']
-#    password = request.POST['password'] 
-#
-#    user = authenticate(username=username, password=password)
-#
-#    if (user):
-#      if (user.is_active):
-#        login(request, user)
-#        return HttpResponseRedirect('/rango/')
-#
-#      else:
-#       return HttpResponse('Your rango account has been disabled. <br/><a href='/rango/login/'>Return</a>')
-#    else:
-#      print "Invalid login details: {0}, {1}".format(username, password)
-#      return HttpResponse("Invalid login details. <br/><a href='/rango/login/'>Return</a>") #replace with more informative statement? i.e. username does not exist/wrong password - poor idea security-wise
-#  else:
-#    return render(request, 'rango/login.html', {})
-   
-#@login_required
-#def user_logout(request):
-#  logout(request)
-#  
-#  return HttpResponseRedirect('/rango/')
-#
-#def register(request):
-#  if request.session.test_cookie_worked():
-#    print "test cookie worked"
-#    request.session.delete_test_cookie()
-#  registered = False
-#
-#  if request.method == 'POST':
-#    user_form = UserForm(data=request.POST)
-#    profile_form = UserProfileForm(data=request.POST)
-#    
-#    if user_form.is_valid() and profile_form.is_valid(): 
-#      user = user_form.save()
-#      
-#      user.set_password(user.password)
-#      user.save()
-#
-#      profile = profile_form.save(commit = False)
-#      profile.user = user
-#      
-#      if 'picture' in request.FILES:
-#        profile.picture = request.FILES['picture']  
-#      
-#      profile.save()
-#
-#      registered = True
-#    else:
-#      print user_form.errors, profile_form.errors
-#  else:
-#    user_form = UserForm()
-#    profile_form = UserProfileForm()
-#
-#  return render(request, 'rango/register.html', {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 @login_required
 def add_category(request):
@@ -164,12 +114,18 @@ def about(request):
   return render(request, 'rango/about.html', context_dict)
 
 
-# pages_list = Page.objects.all()
- # context_dict = {'categories': categories_list, 'pages': pages_list}
- # return render(request, 'rango/details.html', context_dict)
-
 def category(request, category_name_slug):
   context_dict = {}
+  context_dict['result_list'] = None
+  context_dict['query'] = None
+ 
+  if request.method == 'POST':
+    query = request.POST['query'].strip()
+    if query:
+      result_list = run_query(query)
+      context_dict['result_list'] = result_list
+      context_dict['query'] = query
+
   try:
     category = Category.objects.get(slug=category_name_slug)
     context_dict['category_name'] = category.name
@@ -179,8 +135,9 @@ def category(request, category_name_slug):
     context_dict['category_slug_name'] = category.slug
   except Category.DoesNotExist:
     pass
+ 
+  
+  if not context_dict['query']:
+    context_dict['query'] = category.name
+ 
   return render(request, 'rango/category.html', context_dict)
-
-def what(request):
-  context_dict = {}
-  return render(request, 'rango/what.html', context_dict)
