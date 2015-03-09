@@ -43,11 +43,11 @@ LOGIN_URL = "/accounts/login/"
 SECRET_KEY = '-*#^o(39q95$yd-qb6@@mk!o%i1hlno98s69nnp#n*z!(+y9u7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False 
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['xankage.pythonanywhere.com']
 
 # Application definition
 
